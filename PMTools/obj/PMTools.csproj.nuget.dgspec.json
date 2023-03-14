@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\PMTools\\PMTools\\PMTools\\PMTools\\PMTools.csproj": {}
+    "D:\\PMTools\\PMTools\\ProjectManagement\\PMTools\\PMTools\\PMTools.csproj": {}
   },
   "projects": {
-    "D:\\PMTools\\PMTools\\PMTools\\PMTools\\PMTools.csproj": {
+    "D:\\PMTools\\PMTools\\ProjectManagement\\PMTools\\PMTools\\PMTools.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\PMTools\\PMTools\\PMTools\\PMTools\\PMTools.csproj",
+        "projectUniqueName": "D:\\PMTools\\PMTools\\ProjectManagement\\PMTools\\PMTools\\PMTools.csproj",
         "projectName": "PMTools",
-        "projectPath": "D:\\PMTools\\PMTools\\PMTools\\PMTools\\PMTools.csproj",
+        "projectPath": "D:\\PMTools\\PMTools\\ProjectManagement\\PMTools\\PMTools\\PMTools.csproj",
         "packagesPath": "C:\\Users\\shanz\\.nuget\\packages\\",
-        "outputPath": "D:\\PMTools\\PMTools\\PMTools\\PMTools\\obj\\",
+        "outputPath": "D:\\PMTools\\PMTools\\ProjectManagement\\PMTools\\PMTools\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\shanz\\AppData\\Roaming\\NuGet\\NuGet.Config",

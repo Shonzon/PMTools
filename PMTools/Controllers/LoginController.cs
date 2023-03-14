@@ -25,7 +25,7 @@ namespace PMTools.Controllers
         public async Task<IActionResult> RegisterNewUser([FromBody] RegisterUser registerUser, string Role)
         {
             var userExists = _userManager.FindByEmailAsync(registerUser.Email);
-            if (userExists!=null)
+            if (userExists.Result!=null)
             {
                 return StatusCode(StatusCodes.Status403Forbidden, new Response { Status = "Error", Message = "User already exists" });
             }
