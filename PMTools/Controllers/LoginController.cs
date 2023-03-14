@@ -36,15 +36,21 @@ namespace PMTools.Controllers
                 UserName = registerUser.UserName,
                 SecurityStamp = Guid.NewGuid().ToString()
             };
-            var result=await _userManager.CreateAsync(identityUser,registerUser.Password);
-            if (result.Succeeded)
+            if (await _userRole.RoleExistsAsync(Role))
             {
-                return StatusCode(StatusCodes.Status201Created, new Response { Status = "Success", Message = "User Created Successfully" });
+                var result = await _userManager.CreateAsync(identityUser, registerUser.Password);
+                if (!result.Succeeded)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "user creation failed" });
+                }
+                await _userManager.AddToRoleAsync(identityUser,Role); 
+                return StatusCode(StatusCodes.Status200OK, new Response { Status = "Success", Message = "User Created Successfully" });
             }
             else
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "user creation failed" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Role Does not exists" });
             }
+            
 
         }
     }
