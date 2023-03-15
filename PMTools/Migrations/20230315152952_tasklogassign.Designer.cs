@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PMTools.Models;
 
@@ -11,9 +12,10 @@ using PMTools.Models;
 namespace PMTools.Migrations
 {
     [DbContext(typeof(PMDBContext))]
-    partial class PMDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230315152952_tasklogassign")]
+    partial class tasklogassign
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

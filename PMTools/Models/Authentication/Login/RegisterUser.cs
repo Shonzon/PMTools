@@ -4,6 +4,8 @@ namespace PMTools.Models.Authentication.Login
 {
     public class RegisterUser
     {
+        public string? Id { get; set; }
+
         [Required(ErrorMessage ="User Name is Required")]
         public string? UserName { get; set; }
 

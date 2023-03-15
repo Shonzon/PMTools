@@ -1,54 +1,51 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using PMTools.BLL;
+using PMTools.Interface;
 using PMTools.Models;
 using PMTools.Models.Authentication.Login;
 
 namespace PMTools.Controllers
 {
+    [ApiController]
     [Route("[controller]")]
-    public class LoginController : Controller
+    public class LoginController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _userRole;
-        private readonly IConfiguration configuration;
 
+        ILogin _login;
 
         public LoginController(UserManager<IdentityUser> usermanager, RoleManager<IdentityRole> userrole, IConfiguration config)
         {
-            this._userManager = usermanager;
-            this._userRole = userrole;
-            this.configuration = config;
-
+            _login = new LoginBLL(usermanager,userrole,config);
         }
         [HttpPost]
         [Route("RegisterNewUser")]
         public async Task<IActionResult> RegisterNewUser([FromBody] RegisterUser registerUser, string Role)
         {
-            var userExists = _userManager.FindByEmailAsync(registerUser.Email);
-            if (userExists.Result!=null)
-            {
-                return StatusCode(StatusCodes.Status403Forbidden, new Response { Status = "Error", Message = "User already exists" });
-            }
 
-            IdentityUser identityUser = new IdentityUser
+            var response =await _login.RegisterNewUser(registerUser,Role);
+            if (response.Status.Equals("Success"))
             {
-                Email = registerUser.Email,
-                UserName = registerUser.UserName,
-                SecurityStamp = Guid.NewGuid().ToString()
-            };
-            if (await _userRole.RoleExistsAsync(Role))
-            {
-                var result = await _userManager.CreateAsync(identityUser, registerUser.Password);
-                if (!result.Succeeded)
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "user creation failed" });
-                }
-                await _userManager.AddToRoleAsync(identityUser,Role); 
-                return StatusCode(StatusCodes.Status200OK, new Response { Status = "Success", Message = "User Created Successfully" });
+                return StatusCode(StatusCodes.Status200OK, response);
             }
             else
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Role Does not exists" });
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+        [HttpPost]
+        [Route("GenerateToken")]
+        public async Task<IActionResult> GenerateToken(string UserName,string Password)
+        {
+
+            var response =await _login.GenerateToken(UserName, Password);
+            if (response.Status.Equals("Success"))
+            {
+                return StatusCode(StatusCodes.Status200OK, response);
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
     }

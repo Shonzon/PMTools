@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using PMTools.Models.Project;
 
 namespace PMTools.Models
 {
@@ -10,6 +11,11 @@ namespace PMTools.Models
         {
 
         }
+
+        public DbSet<ProjectModel> ProjectTable { get; set; }
+        public DbSet<ProjectAssignModel> ProjectAssignTable { get; set; }
+        public DbSet<TaskModel> TaskTable { get; set; }
+        public DbSet<TaskModelLog> TaskLogTable { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

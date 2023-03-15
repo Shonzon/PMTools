@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PMTools.Migrations
 {
-    public partial class initmigration : Migration
+    public partial class Initmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -46,6 +46,20 @@ namespace PMTools.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProjectTable",
+                columns: table => new
+                {
+                    ProejectId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProejectName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProjectTable", x => x.ProejectId);
                 });
 
             migrationBuilder.CreateTable(
@@ -154,15 +168,36 @@ namespace PMTools.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "0f361c4c-6e78-4f67-9ca8-67343f1ace6b", "2", "Developer", "Developer" });
+            migrationBuilder.CreateTable(
+                name: "ProjectAssignTable",
+                columns: table => new
+                {
+                    AssignId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProejectId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DeveloperId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AssignedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AssignedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ProjectModelProejectId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProjectAssignTable", x => x.AssignId);
+                    table.ForeignKey(
+                        name: "FK_ProjectAssignTable_ProjectTable_ProjectModelProejectId",
+                        column: x => x.ProjectModelProejectId,
+                        principalTable: "ProjectTable",
+                        principalColumn: "ProejectId");
+                });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "43277f7a-46bc-4f05-a1e9-af0fd0e88352", "1", "Admin", "Admin" });
+                values: new object[] { "c1df37ba-f116-441a-975b-2beb384343b4", "1", "Admin", "Admin" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "e0e524bf-7543-43a9-abd1-b921f3a643ac", "2", "Developer", "Developer" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -202,6 +237,11 @@ namespace PMTools.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectAssignTable_ProjectModelProejectId",
+                table: "ProjectAssignTable",
+                column: "ProjectModelProejectId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -222,10 +262,16 @@ namespace PMTools.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "ProjectAssignTable");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "ProjectTable");
         }
     }
 }

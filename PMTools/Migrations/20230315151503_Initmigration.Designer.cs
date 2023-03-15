@@ -12,8 +12,8 @@ using PMTools.Models;
 namespace PMTools.Migrations
 {
     [DbContext(typeof(PMDBContext))]
-    [Migration("20230314154218_initmigration")]
-    partial class initmigration
+    [Migration("20230315151503_Initmigration")]
+    partial class Initmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -53,14 +53,14 @@ namespace PMTools.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "43277f7a-46bc-4f05-a1e9-af0fd0e88352",
+                            Id = "c1df37ba-f116-441a-975b-2beb384343b4",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "0f361c4c-6e78-4f67-9ca8-67343f1ace6b",
+                            Id = "e0e524bf-7543-43a9-abd1-b921f3a643ac",
                             ConcurrencyStamp = "2",
                             Name = "Developer",
                             NormalizedName = "Developer"
@@ -238,6 +238,54 @@ namespace PMTools.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("PMTools.Models.Project.ProjectAssignModel", b =>
+                {
+                    b.Property<Guid>("AssignId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AssignedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("AssignedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeveloperId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProejectId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ProjectModelProejectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("AssignId");
+
+                    b.HasIndex("ProjectModelProejectId");
+
+                    b.ToTable("ProjectAssignTable");
+                });
+
+            modelBuilder.Entity("PMTools.Models.Project.ProjectModel", b =>
+                {
+                    b.Property<Guid>("ProejectId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ProejectName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProejectId");
+
+                    b.ToTable("ProjectTable");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -287,6 +335,18 @@ namespace PMTools.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("PMTools.Models.Project.ProjectAssignModel", b =>
+                {
+                    b.HasOne("PMTools.Models.Project.ProjectModel", null)
+                        .WithMany("DeveloperList")
+                        .HasForeignKey("ProjectModelProejectId");
+                });
+
+            modelBuilder.Entity("PMTools.Models.Project.ProjectModel", b =>
+                {
+                    b.Navigation("DeveloperList");
                 });
 #pragma warning restore 612, 618
         }
