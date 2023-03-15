@@ -50,8 +50,6 @@ namespace PMTools.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Role Does not exists" });
             }
-            
-
         }
     }
 }
